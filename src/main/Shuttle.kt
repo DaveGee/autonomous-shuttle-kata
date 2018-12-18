@@ -1,6 +1,6 @@
-class Shuttle(
-    val position: Position = Position(0, 0)
-) {
+class Shuttle {
+    var position: Position = Position(0, 0)
+        private set
     var bearing: String = "N"
         private set
 
@@ -21,6 +21,18 @@ class Shuttle(
     fun execute(mission: String) = when(mission) {
         "R" -> bearing = right[bearing]!!
         "L" -> bearing = left[bearing]!!
+        "F" -> goForward()
         else -> throw Error("Invalid mission $mission")
+    }
+
+    private fun goForward() {
+        val (X, Y) = position
+        when(bearing) {
+            "N" -> position = Position(X, Y - 1)
+            "S" -> position = Position(X, Y + 1)
+            "E" -> position = Position(X + 1, Y)
+            "W" -> position = Position(X - 1, Y)
+            else -> throw Error("Invalid bearing $bearing")
+        }
     }
 }
