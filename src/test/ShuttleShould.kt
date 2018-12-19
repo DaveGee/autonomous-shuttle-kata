@@ -12,10 +12,11 @@ class ShuttleShould {
     val EAST = "E"
     val WEST = "W"
     val SOUTH= "S"
+    val FORWARD = "F"
 
     @Before
     fun initialise() {
-        shuttle = Shuttle()
+        shuttle = Shuttle(Router())
     }
 
     @Test
@@ -57,8 +58,10 @@ class ShuttleShould {
 
     @Test
     fun `move 1 step north`() {
-        shuttle.execute("F")
         val oneUpNorth = Position(0, -1)
+
+        shuttle.execute(FORWARD)
+
         assertEquals(oneUpNorth, shuttle.position)
         assertEquals(NORTH, shuttle.bearing)
     }
