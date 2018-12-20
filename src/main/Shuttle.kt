@@ -13,11 +13,12 @@ class Shuttle(
     var bearing: String = NORTH
         private set
 
-    fun execute(mission: String) = when(mission) {
-        RIGHT -> bearing = map.rightOf(bearing)
-        LEFT -> bearing = map.leftOf(bearing)
-        FORWARD -> position = router.from(position).navigate(bearing)
-        BACKWARD -> position = router.from(position).navigate(map.oppositeOf(bearing))
-        else -> throw Error("Invalid mission $mission")
+    fun execute(mission: String) = mission.forEach {step ->
+        when(step.toString()) {
+            RIGHT -> bearing = map.rightOf(bearing)
+            LEFT -> bearing = map.leftOf(bearing)
+            FORWARD -> position = router.from(position).navigate(bearing)
+            BACKWARD -> position = router.from(position).navigate(map.oppositeOf(bearing))
+        }
     }
 }
