@@ -1,3 +1,11 @@
+import Navigator.BACKWARD
+import Navigator.EAST
+import Navigator.FORWARD
+import Navigator.LEFT
+import Navigator.NORTH
+import Navigator.RIGHT
+import Navigator.SOUTH
+import Navigator.WEST
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -5,14 +13,6 @@ import kotlin.test.assertEquals
 class ShuttleShould {
 
     lateinit var shuttle: Shuttle
-
-    val RIGHT_TURN = "R"
-    val LEFT_TURN= "L"
-    val NORTH = "N"
-    val EAST = "E"
-    val WEST = "W"
-    val SOUTH= "S"
-    val FORWARD = "F"
 
     @Before
     fun initialise() {
@@ -28,36 +28,36 @@ class ShuttleShould {
 
     @Test
     fun `right turns makes the shuttle go through all directions`() {
-        shuttle.execute(RIGHT_TURN)
+        shuttle.execute(RIGHT)
         assertEquals(EAST, shuttle.bearing)
 
-        shuttle.execute(RIGHT_TURN)
+        shuttle.execute(RIGHT)
         assertEquals(SOUTH, shuttle.bearing)
 
-        shuttle.execute(RIGHT_TURN)
+        shuttle.execute(RIGHT)
         assertEquals(WEST, shuttle.bearing)
 
-        shuttle.execute(RIGHT_TURN)
+        shuttle.execute(RIGHT)
         assertEquals(NORTH, shuttle.bearing)
     }
 
     @Test
     fun `left turns makes the shuttle go through all directions`() {
-        shuttle.execute(LEFT_TURN)
+        shuttle.execute(LEFT)
         assertEquals(WEST, shuttle.bearing)
 
-        shuttle.execute(LEFT_TURN)
+        shuttle.execute(LEFT)
         assertEquals(SOUTH, shuttle.bearing)
 
-        shuttle.execute(LEFT_TURN)
+        shuttle.execute(LEFT)
         assertEquals(EAST, shuttle.bearing)
 
-        shuttle.execute(LEFT_TURN)
+        shuttle.execute(LEFT)
         assertEquals(NORTH, shuttle.bearing)
     }
 
     @Test
-    fun `move 1 step north`() {
+    fun `end up north when moving 1 step forward`() {
         val oneUpNorth = Position(0, -1)
 
         shuttle.execute(FORWARD)
