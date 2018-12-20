@@ -65,4 +65,15 @@ class ShuttleShould {
         assertEquals(oneUpNorth, shuttle.position)
         assertEquals(NORTH, shuttle.bearing)
     }
+
+
+    @Test
+    fun `end up south when moving 1 step backward`() {
+        val oneDownSouth = Position(0, 1)
+
+        shuttle.execute(BACKWARD)
+
+        assertEquals(oneDownSouth, shuttle.position)
+        assertEquals(NORTH, shuttle.bearing)
+    }
 }
