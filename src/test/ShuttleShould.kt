@@ -6,13 +6,21 @@ import Navigator.NORTH
 import Navigator.RIGHT
 import Navigator.SOUTH
 import Navigator.WEST
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 import kotlin.test.assertEquals
 
 class ShuttleShould {
 
     lateinit var shuttle: Shuttle
+
+    val AHEAD = Position(0, -1)
+    val BEHIND= Position(0, 1)
 
     @Before
     fun initialise() {
@@ -58,22 +66,42 @@ class ShuttleShould {
 
     @Test
     fun `end up north when moving 1 step forward`() {
-        val oneUpNorth = Position(0, -1)
-
         shuttle.execute(FORWARD)
 
-        assertEquals(oneUpNorth, shuttle.position)
+        assertEquals(AHEAD, shuttle.position)
         assertEquals(NORTH, shuttle.bearing)
     }
 
 
     @Test
     fun `end up south when moving 1 step backward`() {
-        val oneDownSouth = Position(0, 1)
-
         shuttle.execute(BACKWARD)
 
-        assertEquals(oneDownSouth, shuttle.position)
+        assertEquals(BEHIND, shuttle.position)
         assertEquals(NORTH, shuttle.bearing)
+    }
+
+    @Test
+    fun `report if there's an obstacle ahead`() {
+        val sensorMock = mock<Sensor> {
+            on { sense(any()) } doReturn true
+        }
+
+        shuttle = Shuttle(Router(), obstacleSensor = sensorMock)
+
+        assertEquals(true, shuttle.hasObstacleAhead())
+        verify(sensorMock).sense(AHEAD)
+    }
+
+    @Test
+    fun `report if there's an obstacle behind`() {
+        val sensorMock = mock<Sensor> {
+            on { sense(any()) } doReturn true
+        }
+
+        shuttle = Shuttle(Router(), obstacleSensor = sensorMock)
+
+        assertEquals(true, shuttle.hasObstacleBehind())
+        verify(sensorMock).sense(BEHIND)
     }
 }
