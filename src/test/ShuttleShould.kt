@@ -38,7 +38,7 @@ class ShuttleShould {
     }
 
     @Test
-    fun `right turns makes the shuttle go through all directions`() {
+    fun `see all directions when turning right multiple times`() {
         shuttle.execute(RIGHT)
         assertEquals(EAST, shuttle.bearing)
 
@@ -53,7 +53,7 @@ class ShuttleShould {
     }
 
     @Test
-    fun `left turns makes the shuttle go through all directions`() {
+    fun `see all directions when turning left multiple times`() {
         shuttle.execute(LEFT)
         assertEquals(WEST, shuttle.bearing)
 
