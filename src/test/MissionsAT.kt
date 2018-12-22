@@ -2,6 +2,7 @@ import Navigator.EAST
 import Navigator.NORTH
 import Navigator.SOUTH
 import Navigator.WEST
+import com.nhaarman.mockitokotlin2.mock
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,7 +30,10 @@ class ValidMissionsTests(
 
     @Before
     fun initialise() {
-        shuttle = Shuttle(Router())
+        shuttle = Shuttle(
+            Router(),
+            mock()
+        )
     }
 
     @Test

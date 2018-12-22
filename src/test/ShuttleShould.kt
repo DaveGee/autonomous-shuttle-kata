@@ -24,7 +24,10 @@ class ShuttleShould {
 
     @Before
     fun initialise() {
-        shuttle = Shuttle(Router())
+        shuttle = Shuttle(
+            Router(),
+            mock()
+        )
     }
 
     @Test

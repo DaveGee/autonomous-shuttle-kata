@@ -6,8 +6,8 @@ import Navigator.RIGHT
 
 class Shuttle(
     private val router: Router,
-    private val map: VehicleMap = VehicleMap,
-    private val obstacleSensor: Sensor = ObstacleSensor()
+    private val obstacleSensor: Sensor,
+    private val map: VehicleMap = VehicleMap
 ) {
     var position: Position = Position(0, 0)
         private set
