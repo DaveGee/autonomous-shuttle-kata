@@ -17,12 +17,20 @@ class Shuttle(
     private fun ahead() = router.from(position).navigate(bearing)
     private fun behind() = router.from(position).navigate(map.oppositeOf(bearing))
 
-    fun execute(mission: String) = mission.forEach {step ->
-        when (step.toString()) {
-            RIGHT -> bearing = map.rightOf(bearing)
-            LEFT -> bearing = map.leftOf(bearing)
-            FORWARD -> position = ahead()
-            BACKWARD -> position = behind()
+    fun execute(mission: String) {
+        for (step in mission) {
+            val instruction = step.toString()
+
+            if (instruction == FORWARD && hasObstacleAhead()
+                || instruction == BACKWARD && hasObstacleBehind())
+                break
+
+            when (instruction) {
+                RIGHT -> bearing = map.rightOf(bearing)
+                LEFT -> bearing = map.leftOf(bearing)
+                FORWARD -> position = ahead()
+                BACKWARD -> position = behind()
+            }
         }
     }
 

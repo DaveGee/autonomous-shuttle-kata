@@ -85,26 +85,46 @@ class ShuttleShould {
     }
 
     @Test
-    fun `report if there's an obstacle ahead`() {
+    fun `check and report if it sees an obstacle`() {
         val sensorMock = mock<Sensor> {
             on { sense(any()) } doReturn true
         }
 
-        shuttle = Shuttle(Router(), obstacleSensor = sensorMock)
+        shuttle = Shuttle(Router(), sensorMock)
 
         assertEquals(true, shuttle.hasObstacleAhead())
+        assertEquals(true, shuttle.hasObstacleBehind())
         verify(sensorMock).sense(AHEAD)
+        verify(sensorMock).sense(BEHIND)
     }
 
     @Test
-    fun `report if there's an obstacle behind`() {
+    fun `abort mission if it detects an obstacle ahead`() {
         val sensorMock = mock<Sensor> {
-            on { sense(any()) } doReturn true
+            on { sense(Position(4, 2)) } doReturn true
         }
 
-        shuttle = Shuttle(Router(), obstacleSensor = sensorMock)
+        shuttle = Shuttle(Router(), sensorMock)
+        shuttle.execute("BBRFFFFFF")
 
+        assertEquals(Position(3, 2), shuttle.position)
+        assertEquals(EAST, shuttle.bearing)
+        assertEquals(true, shuttle.hasObstacleAhead())
+        assertEquals(false, shuttle.hasObstacleBehind())
+    }
+
+    @Test
+    fun `abort mission if it detects an obstacle behind`() {
+        val sensorMock = mock<Sensor> {
+            on { sense(Position(4, 2)) } doReturn true
+        }
+
+        shuttle = Shuttle(Router(), sensorMock)
+        shuttle.execute("RFFFFFRFFLBBBBBB")
+
+        assertEquals(Position(5, 2), shuttle.position)
+        assertEquals(EAST, shuttle.bearing)
         assertEquals(true, shuttle.hasObstacleBehind())
-        verify(sensorMock).sense(BEHIND)
+        assertEquals(false, shuttle.hasObstacleAhead())
     }
 }
